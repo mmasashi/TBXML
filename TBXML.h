@@ -101,13 +101,17 @@ typedef struct _TBXMLAttributeBuffer {
 + (id)tbxmlWithXMLString:(NSString*)aXMLString;
 + (id)tbxmlWithXMLData:(NSData*)aData;
 + (id)tbxmlWithXMLFile:(NSString*)aXMLFile;
++ (id)tbxmlWithXMLFile:(NSString*)aXMLFile inBundle:(NSBundle*)aBundle;
 + (id)tbxmlWithXMLFile:(NSString*)aXMLFile fileExtension:(NSString*)aFileExtension;
++ (id)tbxmlWithXMLFile:(NSString*)aXMLFile fileExtension:(NSString*)aFileExtension inBundle:(NSBundle*)aBundle;
 
 - (id)initWithURL:(NSURL*)aURL;
 - (id)initWithXMLString:(NSString*)aXMLString;
 - (id)initWithXMLData:(NSData*)aData;
 - (id)initWithXMLFile:(NSString*)aXMLFile;
+- (id)initWithXMLFile:(NSString*)aXMLFile inBundle:(NSBundle*)aBundle;
 - (id)initWithXMLFile:(NSString*)aXMLFile fileExtension:(NSString*)aFileExtension;
+- (id)initWithXMLFile:(NSString*)aXMLFile fileExtension:(NSString*)aFileExtension inBundle:(NSBundle*)aBundle;
 
 @end
 

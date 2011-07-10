@@ -48,6 +48,8 @@
 
 @synthesize rootXMLElement;
 
+#pragma mark - Initializers
+#pragma mark Autoreleased
 + (id)tbxmlWithURL:(NSURL*)aURL {
 	return [[[TBXML alloc] initWithURL:aURL] autorelease];
 }
@@ -64,10 +66,19 @@
 	return [[[TBXML alloc] initWithXMLFile:aXMLFile] autorelease];
 }
 
++ (id)tbxmlWithXMLFile:(NSString*)aXMLFile inBundle:(NSBundle*)aBundle {
+	return [[[TBXML alloc] initWithXMLFile:aXMLFile inBundle:aBundle] autorelease];
+}
+
 + (id)tbxmlWithXMLFile:(NSString*)aXMLFile fileExtension:(NSString*)aFileExtension {
 	return [[[TBXML alloc] initWithXMLFile:aXMLFile fileExtension:aFileExtension] autorelease];
 }
 
++ (id)tbxmlWithXMLFile:(NSString*)aXMLFile fileExtension:(NSString*)aFileExtension inBundle:(NSBundle*)aBundle {
+	return [[[TBXML alloc] initWithXMLFile:aXMLFile fileExtension:aFileExtension inBundle:aBundle] autorelease];
+}
+
+#pragma mark Designated
 - (id)init {
 	self = [super init];
 	if (self != nil) {
@@ -85,10 +96,9 @@
 	return self;
 }
 
+#pragma mark Convenient
 - (id)initWithURL:(NSURL*)aURL {
 	self = [self initWithXMLString:[NSString stringWithContentsOfURL:aURL encoding:NSUTF8StringEncoding error:nil]];
-	if (self != nil) {
-	}
 	return self;
 }
 
@@ -120,26 +130,25 @@
     return self;
 }
 
-- (id)initWithXMLFile:(NSString*)aXMLFile fileExtension:(NSString*)aFileExtension {
-	self = [self init];
-	if (self != nil) {
-		// Get uncompressed file contents
-		NSData * data = [NSData dataWithUncompressedContentsOfFile:[[NSBundle mainBundle] pathForResource:aXMLFile ofType:aFileExtension]];
-		
-		// decode data
-		[self decodeData:data];
-	}
-	return self;
+- (id)initWithXMLFile:(NSString*)aXMLFile {
+	return [self initWithXMLFile:aXMLFile inBundle:[NSBundle mainBundle]];
 }
 
-- (id)initWithXMLFile:(NSString*)aXMLFile {
+- (id)initWithXMLFile:(NSString*)aXMLFile inBundle:(NSBundle*)aBundle {
+	NSString * filename = [aXMLFile stringByDeletingPathExtension];
+	NSString * extension = [aXMLFile pathExtension];
+	return [self initWithXMLFile:filename fileExtension:extension inBundle:aBundle];
+}
+
+- (id)initWithXMLFile:(NSString*)aXMLFile fileExtension:(NSString*)aFileExtension {
+	return [self initWithXMLFile:aXMLFile fileExtension:aFileExtension inBundle:[NSBundle mainBundle]];
+}
+
+- (id)initWithXMLFile:(NSString*)aXMLFile fileExtension:(NSString*)aFileExtension inBundle:(NSBundle*)aBundle {
 	self = [self init];
 	if (self != nil) {
-		NSString * filename = [aXMLFile stringByDeletingPathExtension];
-		NSString * extension = [aXMLFile pathExtension];
-		
 		// Get uncompressed file contents
-		NSData * data = [NSData dataWithUncompressedContentsOfFile:[[NSBundle mainBundle] pathForResource:filename ofType:extension]];
+		NSData * data = [NSData dataWithUncompressedContentsOfFile:[aBundle pathForResource:aXMLFile ofType:aFileExtension]];
 		
 		// decode data
 		[self decodeData:data];
