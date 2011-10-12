@@ -40,6 +40,12 @@
 #define TBXML_ATTRIBUTE_VALUE_END 3
 #define TBXML_ATTRIBUTE_CDATA_END 4
 
+// text element name
+//   prefix space is for avoiding duplication of tag name
+#define TBXML_TEXT_ELEMENT_NAME_CHAR  " text" 
+#define TBXML_TEXT_ELEMENT_NAME  @TBXML_TEXT_ELEMENT_NAME_CHAR 
+
+
 // ================================================================================================
 //  Structures
 // ================================================================================================

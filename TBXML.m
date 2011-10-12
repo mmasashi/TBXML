@@ -252,19 +252,56 @@
 }
 
 - (void) decodeBytes{
-	
+  
 	// -----------------------------------------------------------------------------
 	// Process xml
 	// -----------------------------------------------------------------------------
 	
 	// set elementStart pointer to the start of our xml
 	char * elementStart=bytes;
+  char * tempElementStart=elementStart;
+  
 	
 	// set parent element to nil
 	TBXMLElement * parentXMLElement = nil;
 	
 	// find next element start
-	while ((elementStart = strstr(elementStart,"<"))) {
+	while (tempElementStart = strstr(elementStart,"<")) {
+		
+    // check text element
+    if (parentXMLElement && tempElementStart - elementStart > 0) {
+      
+      // remove white spaces
+      while (isspace(*elementStart) && elementStart < tempElementStart)
+        elementStart++;      
+      char * end = tempElementStart - 1;
+      while (end > elementStart && isspace(*end))
+        *end--=0;      
+      
+      // create text element if text node exists
+      if (end >= elementStart) {
+        TBXMLElement *xmlElement = [self nextAvailableElement];
+        xmlElement->text = elementStart;
+        xmlElement->name = TBXML_TEXT_ELEMENT_NAME_CHAR;
+        
+        // if this is first child of parent element
+        if (parentXMLElement->currentChild) {
+          // set next child element in list
+          parentXMLElement->currentChild->nextSibling = xmlElement;
+          xmlElement->previousSibling = parentXMLElement->currentChild;
+          
+          parentXMLElement->currentChild = xmlElement;
+          
+        } else {
+          // set first child element
+          parentXMLElement->currentChild = xmlElement;
+          parentXMLElement->firstChild = xmlElement;
+        }
+        xmlElement->parentElement = parentXMLElement;
+      }
+    }
+    
+    elementStart = tempElementStart;
 		
 		// detect comment section
 		if (strncmp(elementStart,"<!--",4) == 0) {
