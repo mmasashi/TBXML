@@ -13,7 +13,8 @@ Example
 
 - sample1.xml
 
-```<root>
+```
+<root>
   first text node text
   <child>first child node text</child>
   second text node text
@@ -47,13 +48,14 @@ Example
 
 - Result (console)
 
-```2011-10-13 01:24:17.039 TBXMLDemo[4455:207] name-> text text->first text node text
+<pre>
+2011-10-13 01:24:17.039 TBXMLDemo[4455:207] name-> text text->first text node text
 2011-10-13 01:24:17.045 TBXMLDemo[4455:207] name->child text->first child node text
 2011-10-13 01:24:17.047 TBXMLDemo[4455:207] name-> text text->second text node text
 2011-10-13 01:24:17.048 TBXMLDemo[4455:207] name->child text->second child node text
 2011-10-13 01:24:17.049 TBXMLDemo[4455:207] name-> text text->third text node text
 2011-10-13 01:24:17.049 TBXMLDemo[4455:207] firstTextElement name-> text text->first text node text
-```
+</pre>
 
 License
 --------------------
